@@ -1,14 +1,30 @@
-# Video Generator App
+# Subsera.AI - Video Discovery Platform
 
-A Flutter mobile application that generates 5 videos based on user input.
+A modern Flutter web application for personalized video discovery powered by artificial intelligence.
 
-## Features
+🌐 **Live Demo**: [View App](https://YOUR_USERNAME.github.io/SubseraNew/)
 
-- **User Input Interface**: Clean and intuitive interface for entering video generation prompts
-- **Video Generation**: Generates 5 unique videos based on the user's input text
-- **Video Display**: Grid layout showing all generated videos with a main player
-- **Video Controls**: Play, pause, and replay functionality for each video
-- **Responsive Design**: Optimized for mobile devices
+## ✨ Features
+
+### Onboarding Experience
+- **Welcome Screen**: Beautiful animated logo with pulsing effect
+- **Interests Selection**: Personalized content preferences
+- **Loading Screen**: Smooth transition to main app
+- **All transitions are buttery smooth** (900ms-1200ms with cubic easing)
+
+### Main Features
+- **Home Screen**: Video unlock system with coin-based mechanics
+- **Gallery**: Collection-based video organization with thumbnails
+- **Favorites**: Save your favorite collections with heart button
+- **Auto Generator**: Text input for generating personalized video recommendations
+- **Bottom Navigation**: Easy switching between Home, Gallery, Favorites, and Generator
+
+### UI/UX Highlights
+- Clean white theme with Google Blue (#4285F4) accents
+- Custom logo and icons (40x40 logo, 30x30 nodes icon)
+- Smooth fade, slide, and scale animations throughout
+- Responsive layout optimized for web
+- WhatsApp-inspired video card design
 
 ## Dependencies
 

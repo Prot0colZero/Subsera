@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'screens/splash_screen.dart';
+import 'screens/navigation_screen.dart';
+import 'services/theme_service.dart';
+
+void main() {
+  // Disable debug overflow indicators (yellow lines)
+  debugPaintSizeEnabled = false;
+  print('🚀 SUBSERA APP STARTING - ${DateTime.now()}');
+  print('🌐 If you see this message, logging is working!');
+  runApp(const VideoGeneratorApp());
+}
+
+class VideoGeneratorApp extends StatefulWidget {
+  const VideoGeneratorApp({super.key});
+
+  @override
+  State<VideoGeneratorApp> createState() => _VideoGeneratorAppState();
+}
+
+class _VideoGeneratorAppState extends State<VideoGeneratorApp> {
+  final ThemeService _themeService = ThemeService();
+
+  @override
+  void initState() {
+    super.initState();
+    print('🎨 THEME SERVICE INITIALIZING...');
+    _themeService.loadThemePreference().then((_) {
+      setState(() {});
+    });
+    _themeService.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Daily Video Generator',
+      theme: _themeService.currentTheme,
+      home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
+    );
+  }
+}
+
+// Main app wrapper for post-onboarding navigation
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const NavigationScreen();
+  }
+}

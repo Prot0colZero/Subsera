@@ -1,0 +1,3 @@
+# Flutter Build Configuration
+# This file configures Flutter to use D: drive for builds
+build-dir=D:\flutter_builds\SubseraNew

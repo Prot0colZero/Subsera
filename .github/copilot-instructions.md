@@ -1,51 +1,73 @@
-<!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
-- [x] Verify that the copilot-instructions.md file in the .github directory is created.
+# Subsera Video Generator App - AI Assistant Instructions
 
-- [x] Clarify Project Requirements
-	<!-- Flutter mobile app that generates 5 videos based on user input -->
+## Project Overview
+This is a Flutter mobile app that generates and displays videos based on user input. The app uses YouTube API for real video content with fallbacks to demo videos. Key architecture includes a tab-based navigation structure with video generation, gallery, and display capabilities.
 
-- [x] Scaffold the Project
-	<!--
-	Ensure that the previous step has been marked as completed.
-	Call project setup tool with projectType parameter.
-	Run scaffolding command to create project files and folders.
-	Use '.' as the working directory.
-	If no appropriate projectType is available, search documentation using available tools.
-	Otherwise, create the project structure manually using available file creation tools.
-	-->
+## Core Architecture
 
-- [x] Customize the Project
-	<!--
-	Verify that all previous steps have been completed successfully and you have marked the step as completed.
-	Develop a plan to modify codebase according to user requirements.
-	Apply modifications using appropriate tools and user-provided references.
-	Skip this step for "Hello World" projects.
-	-->
+### App Structure
+- **Entry Point**: `main.dart` → `SplashScreen` → `NavigationScreen` (3-tab layout)
+- **Navigation**: Bottom tab navigation with `IndexedStack` to preserve state
+- **Theme**: Dark theme with `Color(0xFF0A0A0B)` background and indigo accents
+- **State Management**: StatefulWidgets with local state (no external state management)
 
-- [x] Install Required Extensions
-	<!-- No extensions specified by project setup info -->
+### Key Components
+- `VideoGeneratorService`: YouTube API integration with graceful fallbacks
+- `VideoInfo` model: Standardized video data structure with dual constructors
+- `NavigationScreen`: Main container with preserved tab state
+- WhatsApp-style video widgets: Custom video display components
 
-- [x] Compile the Project
-	<!--
-	Verify that all previous steps have been completed.
-	Install any missing dependencies.
-	Run diagnostics and resolve any issues.
-	Check for markdown files in project folder for relevant instructions on how to do this.
-	NOTE: Flutter SDK required - see README.md for installation instructions
-	-->
+### Data Flow
+1. User input → `VideoGeneratorService.generateVideos()`
+2. YouTube API call → Fallback to demo videos if API fails
+3. `VideoInfo` objects → UI components via StatefulWidget state
+4. Video playback via `youtube_player_flutter` package
 
-- [x] Create and Run Task
-	<!--
-	Verify that all previous steps have been completed.
-	Check https://code.visualstudio.com/docs/debugtest/tasks to determine if the project needs a task. If so, use the create_and_run_task to create and launch a task based on package.json, README.md, and project structure.
-	Skip this step otherwise.
-	 -->
+## Development Patterns
 
-- [x] Launch the Project
-	<!--
-	Verify that all previous steps have been completed.
-	Prompt user for debug mode, launch only if confirmed.
-	NOTE: Requires Flutter SDK installation first
-	 -->
+### File Organization
+```
+lib/
+├── main.dart                    # App entry + theme
+├── screens/                     # Tab screens + navigation
+├── services/                    # YouTube API + business logic  
+├── models/                      # Data structures
+└── widgets/                     # Reusable UI components
+```
 
-- [x] Ensure Documentation is Complete
+### Error Handling Pattern
+Always use try-catch with graceful fallbacks, especially in `VideoGeneratorService`:
+```dart
+try {
+  final youtubeVideos = await _fetchYouTubeVideos(userInput, count);
+  if (youtubeVideos.isNotEmpty) return youtubeVideos;
+} catch (e) {
+  print('❌ Error: $e');
+}
+return await _getFallbackVideos(userInput, count);
+```
+
+### Build & Deploy Workflow
+- **Quick Build**: Use `quick-build.ps1` (configures D: drive caching)
+- **Release Build**: `flutter build apk --release --target-platform android-arm64 --split-per-abi` 
+- **Upload**: PowerShell scripts with Google Drive API integration
+- **Tasks**: Use VS Code tasks for common operations (`Flutter: Run App`, etc.)
+
+## Critical Dependencies
+- `youtube_player_flutter`: Video playback (not `video_player`)
+- `http`: YouTube API calls
+- YouTube API Key embedded in `VideoGeneratorService._youtubeApiKey`
+
+## Common Gotchas
+- **IndexedStack Usage**: Screens maintain state across tab switches
+- **Video Widget Compatibility**: `VideoInfo` has dual constructors for different widget types
+- **API Fallbacks**: Always handle YouTube API failures gracefully
+- **Build Caching**: Use D: drive scripts to avoid C: drive space issues on Windows
+- **PowerShell Execution**: Scripts require `-ExecutionPolicy Bypass` parameter
+
+## When Making Changes
+1. **Video Features**: Modify `VideoGeneratorService` for new video sources
+2. **UI Changes**: Update corresponding screen in `/screens` directory  
+3. **Navigation**: Changes in `NavigationScreen` affect entire tab structure
+4. **Models**: Update both constructors in `VideoInfo` if changing data structure
+5. **Build Issues**: Check PowerShell scripts and VS Code tasks configuration
